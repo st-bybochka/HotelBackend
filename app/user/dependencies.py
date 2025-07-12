@@ -1,10 +1,10 @@
-from fastapi import Request, HTTPException, Depends
+from fastapi import Request, Depends
 from jose import jwt, JWTError
 from datetime import datetime
 
+
 from app.exceptions import TokenExpiredError, TokenAbsentError, TokenIncorrectError
 from app.user.user_dao import UserDao
-from app.user.user_model import Users
 from app.config import settings
 
 
@@ -14,7 +14,9 @@ def get_token(request: Request) -> str:
         raise TokenAbsentError
     return token
 
+
 async def current_user(token: str = Depends(get_token)):
+
     try:
         payload = jwt.decode(
             token, key=settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
@@ -30,9 +32,9 @@ async def current_user(token: str = Depends(get_token)):
     if not user_id:
         raise TokenIncorrectError
 
-    user = await UserDao.get_by_id(model_id=int(user_id))
+    user_dao = UserDao()
+    user = await user_dao.get_by_id(model_id=int(user_id))
     if not user:
         raise TokenIncorrectError
 
     return user
-

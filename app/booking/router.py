@@ -1,14 +1,11 @@
 from fastapi import APIRouter, Depends
 from datetime import date
 
-from httpx import delete
-
 from app.booking.dao import BookingDao
 from app.booking.schemas import ShemBooking
 from app.exceptions import RoomCannotBookedError
-from app.user.user_dao import UserDao
-from app.user.user_model import Users
-from app.dependencies import current_user
+from app.user.models.user_model import Users
+from app.user.dependencies import current_user
 
 router = APIRouter(
     prefix="/booking",

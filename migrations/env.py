@@ -4,10 +4,6 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
-from app.booking.bookings_model import Bookings
-from app.hotel.hotel_model import Hotels
-from app.user.user_model import Users
-from app.room.rooms_model import Rooms
 from app.database import Base
 from app.config import settings
 

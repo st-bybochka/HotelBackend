@@ -1,18 +1,14 @@
-from sqlalchemy import update
-from app.database import async_session_maker
+from dataclasses import dataclass
 
-from app.user.user_model import Users
+from app.user.models.user_model import Users
 from app.dao.base_dao import BaseDao
 
 
+@dataclass
 class UserDao(BaseDao):
     model = Users
 
-    @classmethod
-    async def update(cls, model_id, email: str, new_password: str):
-        async with async_session_maker() as session:
-            query = update(cls.model).values(email=email, hashed_password=new_password).filter_by(id=model_id)
-            await session.execute(query)
-            await session.commit()
-
-
+    async def update_user_data(self, user_id: int, email: str, new_password: str):
+        filter_by={"id": user_id}
+        data = {"email": email, "hashed_password": new_password}
+        await self.update(filter_by=filter_by, data=data)
